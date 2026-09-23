@@ -730,7 +730,7 @@ if('speechSynthesis'in window){pickVoice();speechSynthesis.onvoiceschanged=pickV
   const tb=document.getElementById('themeBtn');
   tb.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀ Light':'☾ Dark';
   document.addEventListener('keydown',e=>{
-    if(e.target.tagName==='INPUT')return;
+    if(e.target.tagName==='INPUT'||e.target.closest('.table-scroll'))return;
     if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();});
 })();
 </script>
