@@ -24,8 +24,9 @@ SOFTWARE.
 
 The MIT license above applies to the source code in `code/`.
 
-The thesis document (`paper/`) and presentation (`slides/`) are the author's
-academic work, provided for reading and reference.
+The thesis document (`docs/thesis_main.pdf`) and presentation
+(`docs/Thesis_Presentation_Sujil_Devkota.pdf`) are the author's academic work,
+provided for reading and reference.
 
 The data in `data/raw/` are derived from the published tables of the National
 Sample Census of Agriculture (NSCA) 2021/22 and district administrative

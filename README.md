@@ -6,6 +6,8 @@
 
 The finalized static website is in `docs/`, including the interactive district map, charts, guided learning modules, and the submitted thesis and presentation downloads. Its figures and wording were checked against the submitted thesis before publication.
 
+The final [thesis PDF](docs/thesis_main.pdf) and [presentation PDF](docs/Thesis_Presentation_Sujil_Devkota.pdf) are stored only in `docs/`. Both the website and this README link to these same files.
+
 GitHub Pages serves the `main` branch's `/docs` folder. No build step is required. To preview locally, run `python3 -m http.server 8000 --directory docs` and open `http://localhost:8000`.
 
 
@@ -36,10 +38,14 @@ The findings are district-level associations rather than causal effects. The pat
 
 ```
 agricultural-sufficiency-nepal/
-├── paper/
-│   └── thesis.pdf             Final thesis (read this)
-├── slides/
-│   └── presentation.pdf       Defense presentation (20 slides)
+├── docs/                      GitHub Pages website and final documents
+│   ├── index.html             Interactive thesis website
+│   ├── learn/                 Guided learning companion
+│   ├── thesis_main.pdf        Final submitted thesis (92 pages)
+│   ├── Thesis_Presentation_Sujil_Devkota.pdf  Defense presentation (20 slides)
+│   ├── thesis-data.js         Website data
+│   ├── nepal-districts.geojson District map boundaries
+│   └── .nojekyll              Serve static files directly
 ├── code/                      Analysis pipeline (Python, standard library + numpy/matplotlib)
 ├── data/
 │   ├── raw/nsonepal/          NSCA 2021/22 source reports (PDF) + digitised tables (CSV)
