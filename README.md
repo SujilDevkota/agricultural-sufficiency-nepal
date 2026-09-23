@@ -1,5 +1,14 @@
 # District-Level Patterns of Land Fragmentation, Irrigation Access, and Agricultural Production Sufficiency in Nepal
 
+## Interactive website
+
+**[Explore the study](https://sujildevkota.github.io/agricultural-sufficiency-nepal/)** · **[Learning companion](https://sujildevkota.github.io/agricultural-sufficiency-nepal/learn/)**
+
+The finalized static website is in `docs/`, including the interactive district map, charts, guided learning modules, and the submitted thesis and presentation downloads. Its figures and wording were checked against the submitted thesis before publication.
+
+GitHub Pages serves the `main` branch's `/docs` folder. No build step is required. To preview locally, run `python3 -m http.server 8000 --directory docs` and open `http://localhost:8000`.
+
+
 A district-level study of how **land fragmentation** and **irrigation access** relate to **agricultural production sufficiency** across all **77 districts of Nepal**, built from the official tables of the *National Sample Census of Agriculture (NSCA) 2021/22*.
 
 **Author:** Sujil Devkota · M.A. Economics

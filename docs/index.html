@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Land, Water &amp; Sufficiency — A District Study of Nepal</title>
+<meta name="description" content="Interactive companion to Sujil Devkota's M.A. Economics thesis on land fragmentation, irrigation access, and agricultural production sufficiency across Nepal's 77 districts (NSCA 2021/22).">
+<meta name="author" content="Sujil Devkota">
+<meta property="og:title" content="Land, Water &amp; Sufficiency — A District Study of Nepal">
+<meta property="og:description" content="District-level associations between irrigation, land fragmentation, and agricultural production sufficiency across Nepal's 77 districts.">
+<link rel="canonical" href="https://sujildevkota.github.io/agricultural-sufficiency-nepal/">
+<meta property="og:url" content="https://sujildevkota.github.io/agricultural-sufficiency-nepal/">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Thesis","name":"District-Level Patterns of Land Fragmentation, Irrigation Access, and Agricultural Production Sufficiency in Nepal","author":{"@type":"Person","name":"Sujil Devkota"},"datePublished":"2026","inLanguage":"en","learningResourceType":"Master's thesis","publisher":{"@type":"CollegeOrUniversity","name":"Tribhuvan University · Patan Multiple Campus"},"about":["Land fragmentation","Irrigation","Food sufficiency","Nepal","Agricultural economics"]}
+</script>
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#f6f3ea; --paper:#f6f3ea; --card:#fffdf8; --ink:#232019; --ink-70:rgba(35,32,25,.72);
+  --ink-55:rgba(35,32,25,.55); --muted:#efeadd; --muted-ink:#6c6455; --line:#e5dfcf;
+  --forest:#1f6b4c; --forest-d:#15503a; --terracotta:#c05f34; --water:#2a6f97;
+  --accent:#1f6b4c; --shadow:0 1px 2px rgba(40,35,20,.06),0 8px 26px rgba(40,35,20,.07);
+  --shadow-sm:0 1px 2px rgba(40,35,20,.06); --radius:12px; --maxw:1120px;
+  --serif:"Instrument Serif",ui-serif,Georgia,"Times New Roman",serif;
+  --sans:"Work Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --map-canvas:#f3eddf; --map-ink:#2d1e14;
+}
+html[data-theme=dark]{
+  --bg:#14150f; --paper:#14150f; --card:#1e2017; --ink:#eae6da; --ink-70:rgba(234,230,218,.74);
+  --ink-55:rgba(234,230,218,.55); --muted:#22241a; --muted-ink:#a7a08d; --line:#33362a;
+  --forest:#5cc191; --forest-d:#8bd8b4; --terracotta:#e59468; --water:#79b4d9;
+  --accent:#5cc191; --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.4);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4); --map-canvas:#ece5d4; --map-ink:#2d1e14;
+}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,.display{font-family:var(--serif);line-height:1.06;letter-spacing:.004em;font-weight:400}
+a{color:var(--forest-d);text-decoration:none}
+html[data-theme=dark] a{color:var(--forest)}
+.mono{font-family:var(--mono)}
+img{max-width:100%}
+::selection{background:color-mix(in srgb,var(--forest) 26%,transparent)}
+
+/* scroll progress */
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:80;transition:width .12s ease}
+
+/* skip link */
+.skip{position:absolute;left:-999px}
+.skip:focus{position:fixed;left:14px;top:14px;z-index:100;background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:8px}
+
+/* nav */
+header.nav{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 86%,transparent);
+  backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 22px}
+.brand{font-family:var(--serif);font-size:21px;letter-spacing:.01em;color:var(--ink)}
+.brand i{opacity:.55}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a,.nav-links button.more{background:none;border:0;cursor:pointer;font-family:var(--sans);
+  color:var(--muted-ink);font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.13em;
+  padding:7px 11px;border-radius:8px;transition:.15s}
+.nav-links a:hover,.nav-links button.more:hover{background:var(--muted);color:var(--ink)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.iconbtn{display:inline-grid;place-items:center;height:36px;min-width:36px;padding:0 10px;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);border-radius:20px;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:600;transition:.15s}
+.iconbtn:hover{border-color:var(--ink-55)}
+.pill{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:20px;
+  border:1px solid var(--ink);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--ink);background:transparent;transition:.15s}
+.pill:hover{background:var(--ink);color:var(--bg)}
+.dropdown{position:relative}
+.dropdown-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:190px;background:var(--card);
+  border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:6px;display:none}
+.dropdown.open .dropdown-menu{display:block}
+.dropdown-menu a{display:block;padding:8px 11px;border-radius:7px;font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted-ink);font-weight:600}
+.dropdown-menu a:hover{background:var(--muted);color:var(--ink)}
+.hamburger{display:none}
+.mobilenav{display:none}
+
+/* layout */
+section{padding:88px 22px}
+.wrap{max-width:var(--maxw);margin:0 auto}
+.tone-ink{background:#16241b;color:#eef3ea}
+.tone-ink h1,.tone-ink h2,.tone-ink h3{color:#fff}
+.tone-ink a{color:#bfe6cf}
+.tone-muted{background:var(--muted)}
+.eyebrow{display:flex;align-items:center;gap:12px;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;opacity:.72;margin-bottom:16px}
+.eyebrow::before{content:"";display:inline-block;width:30px;height:1px;background:currentColor;opacity:.6}
+.sec-head{max-width:760px;margin-bottom:44px}
+.sec-head h2{font-size:clamp(30px,4.6vw,54px);margin:0}
+.sec-head .lede{margin-top:18px;font-size:clamp(16px,1.5vw,19px);line-height:1.6;opacity:.82;max-width:660px}
+.grain{background-image:radial-gradient(rgba(35,32,25,.045) 1px,transparent 1px),radial-gradient(rgba(35,32,25,.03) 1px,transparent 1px);background-size:22px 22px,54px 54px;background-position:0 0,11px 11px}
+html[data-theme=dark] .grain{background-image:radial-gradient(rgba(255,255,255,.028) 1px,transparent 1px),radial-gradient(rgba(255,255,255,.02) 1px,transparent 1px)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.terr{color:var(--terracotta)}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:22px 0}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:74px 22px 96px}
+.hero-grid{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr;gap:56px;align-items:end}
+.hero .kick{font-size:12px;text-transform:uppercase;letter-spacing:.22em;color:var(--muted-ink);display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.hero .kick::before{content:"";width:32px;height:1px;background:var(--ink-55)}
+.hero h1{font-size:clamp(2.6rem,7vw,5.4rem);letter-spacing:-.01em}
+.hero h1 .em{font-style:italic;color:var(--terracotta)}
+.hero h1 .sub{display:block;opacity:.7}
+.hero p.lead{margin-top:26px;max-width:33rem;font-size:18px;line-height:1.6;color:var(--muted-ink)}
+.hero-cta{margin-top:34px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:14.5px}
+.btn-solid{background:var(--ink);color:var(--bg);border-radius:24px;padding:11px 20px;font-weight:500;transition:.15s}
+.btn-solid:hover{opacity:.9}
+.btn-ghost{color:var(--muted-ink);border-bottom:1px solid transparent;padding-bottom:2px}
+.btn-ghost:hover{border-color:var(--muted-ink)}
+.hero aside{border-left:1px solid var(--line);padding-left:28px}
+.hero aside .lab{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-ink)}
+.hero aside .big{font-family:var(--serif);font-size:26px;margin-top:6px}
+.hero aside .sm{font-size:14px;color:var(--muted-ink);margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--ink-70)}
+
+/* learn banner */
+.learnband{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+.learnband .inner{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:linear-gradient(100deg,color-mix(in srgb,var(--forest) 14%,var(--card)),var(--card));
+  border:1px solid var(--line);border-radius:16px;padding:20px 26px;margin-top:-40px;position:relative;box-shadow:var(--shadow)}
+.learnband h3{font-size:22px;margin:0 0 4px}
+.learnband p{margin:0;color:var(--muted-ink);font-size:14.5px;max-width:52ch}
+
+/* stat grid */
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border-radius:12px;overflow:hidden}
+.tone-ink .stat{background:#16241b;padding:30px 26px}
+.stat .lab{font-size:11px;text-transform:uppercase;letter-spacing:.18em;opacity:.62}
+.stat .num{font-family:var(--serif);font-size:clamp(40px,5vw,58px);line-height:1;margin-top:14px}
+.stat .sub{margin-top:12px;font-size:14px;opacity:.72}
+.ranges{margin-top:52px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.range .rn{font-size:11px;text-transform:uppercase;letter-spacing:.18em;opacity:.62}
+.range .rv{display:flex;align-items:baseline;justify-content:space-between;font-family:var(--serif);font-size:24px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.24)}
+.range .rv .to{font-family:var(--mono);font-size:11px;opacity:.5}
+.range .rd{display:flex;justify-content:space-between;font-size:12px;opacity:.72;margin-top:6px}
+
+/* two-col */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.obj-list{list-style:none;margin:0;padding:0}
+.obj-list li{display:flex;gap:16px;border-top:1px solid var(--line);padding:16px 0}
+.obj-list li .n{font-family:var(--mono);font-size:12px;color:var(--terracotta);padding-top:3px}
+.hyp{display:flex;gap:14px;border-top:1px solid var(--line);padding:14px 0}
+.hyp .tag{font-family:var(--mono);font-weight:600;color:var(--forest-d);font-size:13px;min-width:26px}
+html[data-theme=dark] .hyp .tag{color:var(--forest)}
+h3.sub-h{font-family:var(--serif);font-size:24px;margin:0 0 6px}
+
+/* map */
+.map-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{border:1px solid var(--line);background:transparent;color:var(--ink-70);border-radius:20px;padding:7px 14px;
+  font-size:11px;text-transform:uppercase;letter-spacing:.14em;cursor:pointer;font-family:var(--sans);font-weight:600;transition:.15s}
+.tab[aria-selected=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.searchwrap{position:relative}
+.searchwrap input{width:230px;max-width:60vw;border:1px solid var(--line);background:var(--card);color:var(--ink);
+  border-radius:20px;padding:8px 15px;font-family:var(--sans);font-size:14px}
+.searchwrap input:focus{outline:none;border-color:var(--ink-55)}
+.search-list{position:absolute;right:0;top:calc(100% + 5px);width:230px;background:var(--card);border:1px solid var(--line);
+  border-radius:10px;box-shadow:var(--shadow);overflow:hidden;z-index:12}
+.search-list button{display:block;width:100%;text-align:left;padding:8px 13px;background:none;border:0;cursor:pointer;
+  font-family:var(--sans);font-size:14px;color:var(--ink)}
+.search-list button:hover{background:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:12px;color:var(--ink-70);margin-bottom:14px;min-height:20px}
+.legend .swatch{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:6px}
+.legend .ramp{width:150px;height:11px;border-radius:3px}
+.maplayout{display:grid;grid-template-columns:1.6fr 1fr;gap:18px}
+.mapbox{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--map-canvas);aspect-ratio:900/460}
+.mapbox svg{width:100%;height:100%;display:block}
+.mapbox path{cursor:pointer;transition:fill .2s ease,stroke-width .12s ease}
+.maptip{position:absolute;left:12px;top:12px;max-width:16rem;background:color-mix(in srgb,var(--card) 96%,transparent);
+  border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:12px;box-shadow:var(--shadow-sm);pointer-events:none}
+.maptip .nm{font-family:var(--serif);font-size:17px;line-height:1.1}
+.maptip .mt-meta{color:var(--muted-ink);margin-top:2px}
+.maptip .mt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;font-family:var(--mono);font-size:11px}
+.maptip .mt-grid .k{font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-ink);font-family:var(--sans)}
+.panel{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:20px}
+.panel.empty{border-style:dashed;color:var(--ink-70)}
+.panel .p-prov{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted-ink)}
+.panel .p-name{font-family:var(--serif);font-size:26px;margin-top:2px}
+.panel dl{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;margin:18px 0 0}
+.panel dt{font-size:10.5px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted-ink)}
+.panel dd{margin:2px 0 0;font-family:var(--mono);font-size:16px}
+.panel dd small{font-family:var(--sans);font-size:11px;color:var(--muted-ink);margin-left:6px}
+.pbar{margin-top:10px}
+.pbar .pl{display:flex;justify-content:space-between;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-ink);margin-bottom:4px}
+.pbar .track{height:6px;border-radius:6px;background:var(--muted);overflow:hidden}
+.pbar .fill{height:100%}
+details.datatable{margin-top:22px;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:14px 16px}
+details.datatable summary{cursor:pointer;font-weight:600;font-size:14px}
+.tbl-scroll{max-height:400px;overflow:auto;margin-top:12px}
+table.dt{width:100%;border-collapse:collapse;font-size:12px}
+table.dt th{position:sticky;top:0;background:var(--card);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);
+  font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted-ink)}
+table.dt td{padding:6px 10px;border-bottom:1px solid var(--line);font-family:var(--mono)}
+table.dt td.nm,table.dt td.tx{font-family:var(--sans)}
+table.dt td.r{text-align:right}
+
+/* charts */
+.chartcard{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:24px}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart text{font-family:var(--sans)}
+.legend-row{display:flex;flex-wrap:wrap;gap:16px;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-70);margin-bottom:16px}
+.note{margin-top:20px;max-width:66ch;font-size:14px;line-height:1.6;color:var(--muted-ink)}
+
+/* extremes */
+.exgrid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.exlist{list-style:none;margin:16px 0 0;padding:0}
+.exlist li{margin-bottom:16px}
+.exlist .top{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--serif);font-size:18px}
+.exlist .belt{font-family:var(--sans);font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted-ink);margin-left:10px}
+.exlist .v{font-family:var(--mono);font-size:15px}
+.exlist .track{height:6px;border-radius:6px;background:var(--muted);overflow:hidden;margin-top:7px}
+.exlist .fill{height:100%}
+
+/* method */
+.method{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.method li{display:grid;grid-template-columns:70px 1.1fr 2fr;gap:22px;padding:26px 28px;background:var(--card);border-bottom:1px solid var(--line);align-items:start}
+.method li:last-child{border-bottom:0}
+.method .st{font-family:var(--serif);font-size:44px;color:var(--terracotta);line-height:.8}
+.method .mt{font-family:var(--serif);font-size:22px}
+.method .mb{font-size:14.5px;color:var(--muted-ink);line-height:1.55}
+
+/* findings */
+.findgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.finding{border-left:2px solid #cf6a3d;padding:24px 26px;background:rgba(255,255,255,.04)}
+.finding .fn{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.2em;opacity:.6}
+.finding h3{font-size:23px;margin:10px 0 12px}
+.finding p{font-size:14.5px;opacity:.86;line-height:1.6;margin:0}
+
+/* scenario callouts */
+.callouts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+.callout{border-left:2px solid var(--terracotta);background:var(--muted);border-radius:4px;padding:16px 18px}
+.callout.f{border-left-color:var(--forest)}
+.callout .ct{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted-ink)}
+.callout p{margin:8px 0 0;font-size:14px;line-height:1.55}
+
+/* limitations / policy */
+.limgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;list-style:none;margin:0;padding:0}
+.limgrid li{display:flex;gap:18px;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:22px}
+.limgrid .ln{font-family:var(--serif);font-size:30px;color:var(--terracotta);line-height:.9}
+.limgrid h3{font-size:18px;margin:0 0 6px}
+.limgrid p{margin:0;font-size:14px;color:var(--muted-ink);line-height:1.55}
+.polgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;list-style:none;margin:0;padding:0}
+.polgrid li{display:flex;gap:16px;border-top:1px solid var(--line);padding-top:18px}
+.polgrid .ps{font-family:var(--serif);font-size:26px;color:var(--terracotta)}
+.polgrid p{margin:0;font-size:15px;line-height:1.55}
+
+/* slides / presentation */
+.slidewrap{border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden;box-shadow:var(--shadow-sm)}
+.slidebar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.slidebar .st{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted-ink);font-weight:600}
+.slidebar .acts{display:flex;flex-wrap:wrap;gap:8px}
+.slideframe{position:relative;width:100%;aspect-ratio:16/9;background:#0c0d09}
+.slideframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.slideframe:fullscreen{aspect-ratio:auto}
+.slideframe:fullscreen iframe{height:100%}
+
+/* glossary / refs / downloads */
+.gloss{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.gloss dl{margin:14px 0 0}
+.gloss dt{font-weight:600;border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+.gloss dd{margin:4px 0 0;font-size:14px;color:var(--muted-ink);line-height:1.55}
+.gloss ul{list-style:none;margin:14px 0 0;padding:0}
+.gloss ul li{border-top:1px solid var(--line);padding-top:12px;margin-top:12px;font-size:14px;line-height:1.55}
+.dlgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.dlcard{display:flex;flex-direction:column;gap:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:24px;transition:.15s}
+.dlcard:hover{border-color:var(--ink-55)}
+.dlcard .m{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted-ink)}
+.dlcard .t{font-family:var(--serif);font-size:23px}
+.dlcard p{margin:0;font-size:14px;color:var(--ink-70);line-height:1.5}
+.dlcard .cta{margin-top:auto;padding-top:6px;font-size:14px;font-weight:500;color:var(--terracotta)}
+.cite{margin-top:28px;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:24px}
+.cite .m{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted-ink)}
+.cite p{margin:12px 0 0;font-family:var(--mono);font-size:13.5px;line-height:1.6}
+
+/* footer */
+footer.ft{border-top:1px solid var(--line);padding:60px 22px}
+.ft-grid{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+.ft .nm{font-family:var(--serif);font-size:26px}
+.ft .lab{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-ink)}
+.ft .bottom{max-width:var(--maxw);margin:36px auto 0;display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:20px;font-size:12px;color:var(--muted-ink)}
+
+/* back to top */
+.totop{position:fixed;right:22px;bottom:22px;z-index:40;width:44px;height:44px;border-radius:50%;display:none;place-items:center;
+  border:1px solid var(--line);background:color-mix(in srgb,var(--card) 95%,transparent);color:var(--ink);cursor:pointer;box-shadow:var(--shadow)}
+.totop.show{display:grid}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}*{scroll-behavior:auto!important}}
+
+/* responsive */
+@media (max-width:900px){
+  :root{--maxw:820px}
+  .nav-links{display:none}
+  .hamburger{display:inline-grid}
+  .hero-grid{grid-template-columns:1fr;gap:34px}
+  .hero aside{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:26px}
+  .two,.exgrid,.findgrid,.limgrid,.polgrid,.gloss,.maplayout{grid-template-columns:1fr}
+  .statgrid{grid-template-columns:1fr 1fr}
+  .ranges{grid-template-columns:1fr}
+  .dlgrid{grid-template-columns:1fr}
+  .method li{grid-template-columns:1fr;gap:8px}
+  .method .st{font-size:34px}
+  .callouts{grid-template-columns:1fr}
+  section{padding:64px 20px}
+  .mobilenav.open{display:block}
+}
+@media (max-width:560px){.statgrid{grid-template-columns:1fr}}
+.mobilenav{position:fixed;inset:0;z-index:70;background:var(--bg);padding:20px}
+.mobilenav .mtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.mobilenav a{display:block;padding:13px 6px;border-bottom:1px solid var(--line);font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-ink);font-weight:600}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<a class="skip" href="#overview">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top">Devkota <i>· Nepal</i></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#overview">Overview</a>
+      <a href="#map">Map</a>
+      <a href="#findings">Findings</a>
+      <a href="#method">Method</a>
+      <a href="#slides">Slides</a>
+      <div class="dropdown" id="moreDrop">
+        <button class="more" id="moreBtn" aria-haspopup="true" aria-expanded="false">More ▾</button>
+        <div class="dropdown-menu">
+          <a href="#numbers">Numbers</a>
+          <a href="#provinces">Provinces</a>
+          <a href="#districts">Districts</a>
+          <a href="#correlations">Correlations</a>
+          <a href="#scenarios">Scenarios</a>
+          <a href="#severe">Severe</a>
+          <a href="#limitations">Limitations</a>
+          <a href="#glossary">Glossary</a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <a class="iconbtn" href="learn/" title="Guided learning companion">Learn</a>
+      <button class="iconbtn" id="themeBtn" aria-label="Toggle dark mode">☾</button>
+      <a class="pill" href="thesis_main.pdf" target="_blank" rel="noopener">Thesis PDF</a>
+      <button class="iconbtn hamburger" id="hamBtn" aria-label="Open menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="mobilenav" id="mobilenav">
+  <div class="mtop"><span class="brand">Devkota <i>· Nepal</i></span><button class="iconbtn" id="mclose" aria-label="Close">✕</button></div>
+  <a href="#overview">Overview</a><a href="#numbers">Numbers</a><a href="#map">Map</a><a href="#provinces">Provinces</a>
+  <a href="#districts">Districts</a><a href="#correlations">Correlations</a><a href="#scenarios">Scenarios</a>
+  <a href="#method">Method</a><a href="#findings">Findings</a><a href="#severe">Severe</a><a href="#limitations">Limitations</a>
+  <a href="#slides">Slides</a><a href="#glossary">Glossary</a><a href="#downloads">Downloads</a>
+  <a href="learn/">Learning companion →</a><a href="thesis_main.pdf" target="_blank" rel="noopener">Download thesis PDF →</a>
+</div>
+
+<!-- HERO -->
+<header class="hero grain" id="top">
+  <div class="hero-grid">
+    <div>
+      <div class="kick" id="heroKick"></div>
+      <h1>Land, water &amp; <span class="em">sufficiency</span><span class="sub">across Nepal's 77 districts.</span></h1>
+      <p class="lead">An interactive companion to a district-level study of land fragmentation, irrigation access, and agricultural production sufficiency — built from the official tables of the National Sample Census of Agriculture (NSCA) 2021/22.</p>
+      <div class="hero-cta">
+        <a class="btn-solid" href="thesis_main.pdf" target="_blank" rel="noopener">Download the full thesis (PDF) ↓</a>
+        <a class="btn-ghost" href="#overview">Read the 2-minute summary</a>
+        <a class="btn-ghost" href="#slides">View the presentation →</a>
+      </div>
+    </div>
+    <aside>
+      <div class="lab">Author</div>
+      <div class="big" id="heroAuthor"></div>
+      <div class="sm" id="heroInst"></div>
+      <div class="rule"></div>
+      <div class="lab">Keywords</div>
+      <div class="chips" style="margin-top:10px">
+        <span class="chip">land fragmentation</span><span class="chip">irrigation access</span>
+        <span class="chip">production sufficiency</span><span class="chip">Nepal</span><span class="chip">district analysis</span>
+      </div>
+      <div class="rule"></div>
+      <div class="lab">JEL</div>
+      <div class="mono" style="margin-top:8px;font-size:14px">Q15 · Q18 · O13</div>
+    </aside>
+  </div>
+</header>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Overview</div>
+      <h2>A district lens on a national question.</h2>
+      <p class="lede">For the majority of Nepalese holdings, own production does not cover household consumption. This study asks what kinds of districts those holdings sit in — and which structural feature, water access or parcel fragmentation, best predicts the gap.</p>
+    </div>
+    <div class="two">
+      <div class="reveal">
+        <h3 class="sub-h">Objectives</h3>
+        <ol class="obj-list" id="objList"></ol>
+        <h3 class="sub-h" style="margin-top:30px">Hypotheses</h3>
+        <div id="hypList"></div>
+      </div>
+      <div class="reveal">
+        <h3 class="sub-h">Abstract</h3>
+        <p style="color:var(--ink-70);line-height:1.7">A district-level dataset is built by merging the NSCA 2021/22 tables on parcel structure, irrigation, sufficiency, food-insufficiency duration, and six controls. Because the outcome is a bounded proportion in <span class="mono">[0,1]</span>, the analysis moves from descriptive and weighted-correlation evidence to a weighted-OLS benchmark and a fractional logit with province fixed effects and mean-centred interactions.</p>
+        <p style="color:var(--ink-70);line-height:1.7;margin-top:14px">Headline result: irrigation coverage is the dominant correlate of lower insufficiency — a roughly <strong class="terr">20-percentage-point</strong> predicted gap between low- and high-irrigation district profiles, with bootstrap intervals that exclude zero. Fragmentation's bivariate disadvantage is absorbed by geography once fixed effects and controls are included, and the fragmentation–irrigation interaction is statistically null.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY NUMBERS -->
+<section id="numbers" class="tone-ink">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The picture in six numbers</div>
+      <h2>Small, fragmented, unevenly watered.</h2>
+      <p class="lede">Holdings-weighted means across all 77 districts of Nepal (Thesis Table 4.1). The 52.5% irrigation figure weights district area shares by holdings; the national area aggregate cited in Chapter I is 54.5%. They use different weights.</p>
+    </div>
+    <div class="statgrid reveal" id="statGrid"></div>
+    <div class="ranges reveal" id="rangeGrid"></div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section id="map">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Interactive map</div>
+      <h2>Nepal's 77 districts, at a glance.</h2>
+      <p class="lede">True district-level shading from NSCA 2021/22 (Thesis Annex Table). Toggle between insufficiency, irrigation, fragmentation, and the Mountain/Hill/Terai belt — hover, click to pin, or search a district to read its full profile.</p>
+    </div>
+    <div class="reveal">
+      <div class="map-controls">
+        <div class="tabs" id="mapTabs" role="tablist" aria-label="Map metric"></div>
+        <div class="searchwrap">
+          <input type="search" id="mapSearch" placeholder="Search a district…" aria-label="Search a district" autocomplete="off">
+          <div id="searchList"></div>
+        </div>
+      </div>
+      <div class="legend" id="mapLegend"></div>
+      <div class="maplayout">
+        <div class="mapbox" id="mapBox">
+          <svg id="mapSvg" viewBox="0 0 900 460" role="group" aria-label="Choropleth map of Nepal's 77 districts. Districts are also listed in the data table below."></svg>
+          <div class="maptip" id="mapTip" hidden></div>
+        </div>
+        <div id="mapPanel"></div>
+      </div>
+      <p class="note">Hover any district for a quick read; click to pin it open in the side panel. Use the search box to jump to a specific district. Data: NSCA 2021/22.</p>
+      <details class="datatable">
+        <summary>District-level data table (all 77 districts)</summary>
+        <div class="tbl-scroll">
+          <table class="dt"><thead><tr>
+            <th>#</th><th>District</th><th>Province</th><th>Belt</th>
+            <th class="r">Insuff.</th><th class="r">Irrig.</th><th class="r">Parcels</th><th class="r">Severe</th>
+          </tr></thead><tbody id="dtBody"></tbody></table>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- PROVINCES -->
+<section id="provinces" class="tone-muted">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Chapter IV · Province profile</div>
+      <h2>Madhesh waters the most. Karnali waters the least.</h2>
+      <p class="lede">At provincial resolution the inverse pattern is already plain: irrigation coverage rises, insufficiency falls. The Mountains-to-Terai gradient does most of the work.</p>
+    </div>
+    <div class="chartcard reveal">
+      <div class="legend-row">
+        <span><span class="swatch" style="display:inline-block;width:11px;height:11px;border-radius:3px;background:var(--forest);vertical-align:-1px;margin-right:6px"></span>Irrigated area share</span>
+        <span><span class="swatch" style="display:inline-block;width:11px;height:11px;border-radius:3px;background:var(--terracotta);vertical-align:-1px;margin-right:6px"></span>Insufficiency share</span>
+      </div>
+      <div class="chart" id="provinceChart"></div>
+      <p class="note">Madhesh combines the highest weighted irrigation coverage (74%) with the lowest insufficiency (43%); Karnali combines the lowest irrigation (29%) with the highest insufficiency (70%). Fragmentation runs the opposite way: highest in Karnali (3.35 parcels per holding), lowest in Koshi (2.20).</p>
+    </div>
+  </div>
+</section>
+
+<!-- EXTREMES -->
+<section id="districts">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">District extremes</div>
+      <h2>The five worst-off and the five best-off districts.</h2>
+      <p class="lede">All five highest-insufficiency districts are mountain or hill. All five lowest are in the Terai plains.</p>
+    </div>
+    <div class="exgrid reveal">
+      <div class="card" style="padding:26px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <h3 class="sub-h">Highest insufficiency</h3>
+          <span style="font-size:10.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted-ink)">share of holdings</span>
+        </div>
+        <ul class="exlist" id="exTop"></ul>
+      </div>
+      <div class="card" style="padding:26px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <h3 class="sub-h">Lowest insufficiency</h3>
+          <span style="font-size:10.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted-ink)">share of holdings</span>
+        </div>
+        <ul class="exlist" id="exLow"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CORRELATIONS -->
+<section id="correlations" class="tone-muted">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Correlation evidence</div>
+      <h2>Irrigation is by far the strongest correlate.</h2>
+      <p class="lede">Holdings-weighted correlations with the share of holdings reporting insufficient own production (Thesis Table 4.5). Green bars show negative associations; terracotta bars show positive associations.</p>
+    </div>
+    <div class="chartcard reveal">
+      <div class="chart" id="corrChart"></div>
+      <p class="note">The irrigated-area share correlates at <span class="mono">−0.86</span> with insufficiency. Fragmentation correlates positively at <span class="mono">+0.40</span>, but most of that signal is absorbed by geography in the multivariate models. Fast market access enters with a counter-intuitive positive sign — a compositional story about urban, part-time holdings, examined in §4.4.1 of the thesis.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section id="scenarios">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Fractional logit · scenario predictions</div>
+      <h2>A ~20-point gap between low- and high-irrigation profiles.</h2>
+      <p class="lede">Predicted insufficiency at the lower- and upper-quartile irrigation shares (23% and 67%) for two fragmentation levels. Bootstrap 95% CIs on the irrigation gap exclude zero.</p>
+    </div>
+    <div class="chartcard reveal">
+      <div class="chart" id="scenarioChart"></div>
+      <div class="callouts">
+        <div class="callout">
+          <div class="ct">Low irrigation</div>
+          <p>~68–70% predicted insufficiency. Fragmentation adds about 2 pp on top.</p>
+        </div>
+        <div class="callout f">
+          <div class="ct">High irrigation</div>
+          <p>~48% predicted insufficiency, with the fragmentation gap collapsing to ~0.1 pp — descriptively consistent with irrigation neutralising the fragmentation disadvantage, though the interaction is statistically null at n = 77.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section id="method" class="tone-muted">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Chapter III</div>
+      <h2>From census tables to district predictions.</h2>
+      <p class="lede">A reproducible workflow that goes from the published NSCA 2021/22 tables to every number on this page.</p>
+    </div>
+    <ol class="method reveal" id="methodList"></ol>
+  </div>
+</section>
+
+<!-- FINDINGS -->
+<section id="findings" class="tone-ink">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Chapter V · Findings</div>
+      <h2>What the district cross-section can and cannot say.</h2>
+    </div>
+    <div class="findgrid reveal" id="findGrid"></div>
+  </div>
+</section>
+
+<!-- SEVERE -->
+<section id="severe">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Finding 04 · the geography flips</div>
+      <h2>Severe insufficiency is a different beast.</h2>
+      <p class="lede">The 10–12 month deprivation measure (NSCA Table 36.2) does not track overall insufficiency. Dolpa, the worst overall, has a severe share of 0.001. Severe peaks in Kaski (0.163) and Kathmandu (0.161) — urbanised districts of near-landless, part-time holdings.</p>
+    </div>
+    <div class="chartcard reveal">
+      <div class="legend-row">
+        <span><span class="swatch" style="display:inline-block;width:11px;height:11px;border-radius:3px;background:var(--terracotta);vertical-align:-1px;margin-right:6px"></span>Overall insufficiency</span>
+        <span><span class="swatch" style="display:inline-block;width:11px;height:11px;border-radius:3px;background:var(--forest);vertical-align:-1px;margin-right:6px"></span>Severe (10–12 mo)</span>
+      </div>
+      <div class="chart" id="severeChart"></div>
+      <p class="note">Every bar shows a district's own overall and severe (10–12 month) insufficiency shares from the NSCA data; the eight districts are chosen to illustrate that the two measures do not track each other. Dolpa, Kaski and Kathmandu are the contrasts highlighted in §4.4.4 of the thesis, which draws no sufficiency conclusions from the severe measure — it is a distinct dimension of deprivation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LIMITATIONS -->
+<section id="limitations" class="tone-muted">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">What this study cannot tell you</div>
+      <h2>Five honest caveats, in plain language.</h2>
+      <p class="lede">The page shows the patterns the thesis found. It does not — and the thesis does not — claim that pulling one lever would, on its own, fix the gap. Before you read the policy implications, read these.</p>
+    </div>
+    <ol class="limgrid reveal" id="limGrid"></ol>
+  </div>
+</section>
+
+<!-- POLICY -->
+<section id="policy">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Policy implications</div>
+      <h2>Conditional, not causal — but actionable.</h2>
+      <p class="lede">The evidence is associational. Recommendations follow §5.4 of the thesis; the limitations are set out in §1.6 and revisited in §5.3.</p>
+    </div>
+    <ul class="polgrid reveal" id="polGrid"></ul>
+  </div>
+</section>
+
+<!-- SLIDES -->
+<section id="slides" class="tone-muted">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Presentation</div>
+      <h2>The defense deck, right here.</h2>
+      <p class="lede">The full 20-slide presentation — the question, the data, the method, the findings, and the honest caveats — embedded below. Open it fullscreen for the room, or download the PDF.</p>
+    </div>
+    <div class="slidewrap reveal">
+      <div class="slidebar">
+        <span class="st">Thesis presentation · 16 slides · PDF</span>
+        <div class="acts">
+          <button class="pill" id="fsBtn">⛶ Open fullscreen</button>
+          <a class="iconbtn" href="Thesis_Presentation_Sujil_Devkota.pdf" target="_blank" rel="noopener">Open in new tab</a>
+          <a class="iconbtn" href="Thesis_Presentation_Sujil_Devkota.pdf" download>Download</a>
+        </div>
+      </div>
+      <div class="slideframe" id="slideFrame">
+        <iframe id="slidePdf" title="Thesis presentation slides" src="Thesis_Presentation_Sujil_Devkota.pdf#view=FitH&toolbar=1"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<section id="glossary">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Glossary &amp; references</div>
+      <h2>Plain-English definitions and the literature behind the work.</h2>
+      <p class="lede">If a term here is unfamiliar, look it up. If a finding made you curious, the references below are the starting points cited in the thesis.</p>
+    </div>
+    <div class="gloss reveal">
+      <div class="card" style="padding:26px">
+        <h3 class="sub-h">Glossary</h3>
+        <dl id="glossList"></dl>
+      </div>
+      <div class="card" style="padding:26px">
+        <h3 class="sub-h">Selected references</h3>
+        <ul id="refList"></ul>
+        <p style="margin-top:16px;font-size:12px;color:var(--ink-55)">A full bibliography is included in the thesis PDF.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOADS -->
+<section id="downloads" class="tone-muted">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Read &amp; reproduce</div>
+      <h2>Take the study with you.</h2>
+      <p class="lede">The full thesis PDF, the presentation deck, and the complete code-and-data repository are all one click away.</p>
+    </div>
+    <div class="dlgrid reveal">
+      <a class="dlcard" href="thesis_main.pdf" target="_blank" rel="noopener">
+        <div class="m">PDF · full thesis</div><div class="t">Full thesis (PDF)</div>
+        <p>The complete document — five chapters, tables, robustness annex, and references.</p>
+        <div class="cta">Download PDF ↓</div>
+      </a>
+      <a class="dlcard" href="Thesis_Presentation_Sujil_Devkota.pdf" target="_blank" rel="noopener">
+        <div class="m">PDF · 20 slides</div><div class="t">Presentation deck</div>
+        <p>The defense presentation — plain-language walkthrough with speaker-ready framing.</p>
+        <div class="cta">Download slides ↓</div>
+      </a>
+      <a class="dlcard" href="https://github.com/SujilDevkota/agricultural-sufficiency-nepal" target="_blank" rel="noopener">
+        <div class="m">GitHub · code &amp; data</div><div class="t">Code &amp; data repository</div>
+        <p>The full project — the NSCA 2021/22 source tables, the assembled district dataset, and the scripts that reproduce every table and figure in the thesis.</p>
+        <div class="cta">Open on GitHub →</div>
+      </a>
+    </div>
+    <div class="cite reveal">
+      <div class="m">How to cite</div>
+      <p id="citeText"></p>
+    </div>
+  </div>
+</section>
+
+<footer class="ft grain">
+  <div class="ft-grid">
+    <div>
+      <div class="nm" id="ftAuthor"></div>
+      <p style="margin-top:8px;max-width:46ch;color:var(--muted-ink);font-size:14px" id="ftTitle"></p>
+      <p style="margin-top:14px;font-size:14px"><a href="learn/">Guided learning companion →</a></p>
+    </div>
+    <div>
+      <div class="lab">Data</div>
+      <p style="margin-top:12px;font-size:14px" id="ftData"></p>
+      <p style="font-size:14px;color:var(--muted-ink)">All 77 districts of Nepal</p>
+    </div>
+    <div>
+      <div class="lab">Institution</div>
+      <p style="margin-top:12px;font-size:14px" id="ftInst"></p>
+      <p style="font-size:14px;color:var(--muted-ink)" id="ftProg"></p>
+    </div>
+  </div>
+  <div class="bottom">
+    <span id="ftCopy"></span>
+    <span class="mono">APA 7 · natbib · pdfLaTeX</span>
+  </div>
+</footer>
+
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<script src="thesis-data.js"></script>
+<script>
+(function(){
+  "use strict";
+  var T = window.THESIS;
+  var $ = function(s,el){return (el||document).querySelector(s)};
+  var esc = function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  var pct = function(v,d){return (v*100).toFixed(d==null?1:d)+'%'};
+
+  /* ---------- theme ---------- */
+  var root = document.documentElement;
+  function setTheme(t){root.setAttribute('data-theme',t);try{localStorage.setItem('theme',t)}catch(e){}
+    $('#themeBtn').textContent = t==='dark'?'☀':'☾';}
+  (function(){var saved;try{saved=localStorage.getItem('theme')}catch(e){}
+    setTheme(saved||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));})();
+  $('#themeBtn').addEventListener('click',function(){setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark');drawAllCharts();renderMap();});
+
+  /* ---------- nav interactions ---------- */
+  var drop=$('#moreDrop');
+  $('#moreBtn').addEventListener('click',function(e){e.stopPropagation();drop.classList.toggle('open');
+    $('#moreBtn').setAttribute('aria-expanded',drop.classList.contains('open'));});
+  document.addEventListener('click',function(){drop.classList.remove('open');$('#moreBtn').setAttribute('aria-expanded','false');
+    $('#searchList').innerHTML='';});
+  var mnav=$('#mobilenav');
+  $('#hamBtn').addEventListener('click',function(){mnav.classList.add('open')});
+  $('#mclose').addEventListener('click',function(){mnav.classList.remove('open')});
+  mnav.addEventListener('click',function(e){if(e.target.tagName==='A')mnav.classList.remove('open')});
+
+  /* ---------- fill text bits ---------- */
+  $('#heroKick').textContent = T.meta.program+' · 2026';
+  $('#heroAuthor').textContent = T.meta.author;
+  $('#heroInst').textContent = T.meta.institution;
+  $('#citeText').textContent = T.meta.citation;
+  $('#ftAuthor').textContent = T.meta.author;
+  $('#ftTitle').textContent = T.meta.title;
+  $('#ftData').textContent = T.meta.dataSource;
+  $('#ftInst').textContent = T.meta.institution;
+  $('#ftProg').textContent = T.meta.program+' · '+T.meta.year;
+  $('#ftCopy').textContent = '© '+T.meta.year+' '+T.meta.author;
+
+  /* ---------- overview ---------- */
+  $('#objList').innerHTML = T.objectives.map(function(o,i){
+    return '<li><span class="n">0'+(i+1)+'</span><span>'+esc(o)+'</span></li>';}).join('');
+  $('#hypList').innerHTML = T.hypotheses.map(function(h){
+    return '<div class="hyp"><span class="tag">'+esc(h.id)+'</span><span>'+esc(h.text)+'</span></div>';}).join('');
+
+  /* ---------- key numbers ---------- */
+  $('#statGrid').innerHTML = T.keyStats.map(function(s){
+    return '<div class="stat"><div class="lab">'+esc(s.label)+'</div><div class="num">'+esc(s.value)+'</div><div class="sub">'+esc(s.sub)+'</div></div>';}).join('');
+  $('#rangeGrid').innerHTML = T.ranges.map(function(r){
+    return '<div class="range"><div class="rn">'+esc(r.name)+'</div><div class="rv"><span>'+esc(r.min)+'</span><span class="to">to</span><span>'+esc(r.max)+'</span></div><div class="rd"><span>'+esc(r.minDistrict)+'</span><span>'+esc(r.maxDistrict)+'</span></div></div>';}).join('');
+
+  /* ---------- method / findings / limitations / policy ---------- */
+  $('#methodList').innerHTML = T.methodology.map(function(m){
+    return '<li><div class="st">'+m.step+'</div><div class="mt">'+esc(m.title)+'</div><div class="mb">'+esc(m.body)+'</div></li>';}).join('');
+  $('#findGrid').innerHTML = T.conclusions.map(function(c,i){
+    return '<article class="finding"><div class="fn">Finding 0'+(i+1)+'</div><h3>'+esc(c.title)+'</h3><p>'+esc(c.body)+'</p></article>';}).join('');
+  $('#limGrid').innerHTML = T.limitations.map(function(l,i){
+    return '<li><span class="ln">'+String(i+1).padStart(2,'0')+'</span><div><h3>'+esc(l.title)+'</h3><p>'+esc(l.body)+'</p></div></li>';}).join('');
+  $('#polGrid').innerHTML = T.policy.map(function(p,i){
+    return '<li><span class="ps">§'+(i+1)+'</span><p>'+esc(p)+'</p></li>';}).join('');
+
+  /* ---------- glossary / refs ---------- */
+  $('#glossList').innerHTML = T.glossary.map(function(g){
+    return '<dt>'+esc(g.term)+'</dt><dd>'+esc(g.def)+'</dd>';}).join('');
+  $('#refList').innerHTML = T.references.map(function(r){
+    return '<li><strong>'+esc(r.authors)+'</strong> ('+r.year+'). <em>'+esc(r.title)+'</em> <span style="color:var(--muted-ink)">'+esc(r.journal)+'.</span></li>';}).join('');
+
+  /* ---------- extremes ---------- */
+  var byInsuff = T.districts.slice().sort(function(a,b){return b.insufficiency-a.insufficiency});
+  var top5 = byInsuff.slice(0,5), low5 = byInsuff.slice(-5).reverse();
+  function exHTML(rows,color){var mx=Math.max.apply(null,rows.map(function(r){return r.insufficiency}));
+    return rows.map(function(r){return '<li><div class="top"><span>'+esc(r.name)+'<span class="belt">'+r.belt+'</span></span><span class="v">'+pct(r.insufficiency)+'</span></div><div class="track"><div class="fill" style="width:'+(r.insufficiency/mx*100)+'%;background:'+color+'"></div></div></li>';}).join('');}
+  $('#exTop').innerHTML = exHTML(top5,'var(--terracotta)');
+  $('#exLow').innerHTML = exHTML(low5,'var(--forest)');
+
+  /* ---------- data table ---------- */
+  $('#dtBody').innerHTML = T.districts.slice().sort(function(a,b){return a.rank-b.rank}).map(function(d){
+    return '<tr><td style="color:var(--muted-ink)">'+d.rank+'</td><td class="nm">'+esc(d.name)+'</td><td class="tx" style="color:var(--ink-70)">'+esc(d.province)+'</td><td class="tx" style="color:var(--ink-70)">'+d.belt+'</td><td class="r">'+pct(d.insufficiency)+'</td><td class="r">'+pct(d.irrigation)+'</td><td class="r">'+d.parcels.toFixed(2)+'</td><td class="r">'+pct(d.severe)+'</td></tr>';}).join('');
+
+  /* ============ CHARTS (inline SVG) ============ */
+  var VF=function(){return getComputedStyle(root).getPropertyValue('--forest').trim()||'#1f6b4c'};
+  var VT=function(){return getComputedStyle(root).getPropertyValue('--terracotta').trim()||'#c05f34'};
+  var VINK=function(){return getComputedStyle(root).getPropertyValue('--ink').trim()};
+  var VMI=function(){return getComputedStyle(root).getPropertyValue('--muted-ink').trim()};
+  var VLINE=function(){return getComputedStyle(root).getPropertyValue('--line').trim()};
+  var MINK=function(){return getComputedStyle(root).getPropertyValue('--map-ink').trim()||'#2d1e14'};
+
+  function svg(w,h,inner){return '<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="xMidYMid meet">'+inner+'</svg>';}
+
+  function drawProvince(){
+    var d=T.provinceProfile, W=820,H=420,padL=44,padR=16,padT=24,padB=52;
+    var iw=W-padL-padR, ih=H-padT-padB, n=d.length, band=iw/n, bw=Math.min(46,band*0.32), gap=6;
+    var g='';
+    // gridlines 0..80
+    for(var y=0;y<=80;y+=20){var yy=padT+ih-(y/80)*ih;
+      g+='<line x1="'+padL+'" y1="'+yy+'" x2="'+(W-padR)+'" y2="'+yy+'" stroke="'+VLINE()+'"/>'+
+         '<text x="'+(padL-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="11" fill="'+VMI()+'">'+y+'%</text>';}
+    d.forEach(function(p,i){var cx=padL+band*i+band/2;
+      var v1=p.irrigation*100, v2=p.insufficiency*100;
+      var h1=v1/80*ih, h2=v2/80*ih;
+      g+='<rect x="'+(cx-bw-gap/2)+'" y="'+(padT+ih-h1)+'" width="'+bw+'" height="'+h1+'" rx="3" fill="'+VF()+'"/>'+
+         '<rect x="'+(cx+gap/2)+'" y="'+(padT+ih-h2)+'" width="'+bw+'" height="'+h2+'" rx="3" fill="'+VT()+'"/>'+
+         '<text x="'+cx+'" y="'+(H-padB+20)+'" text-anchor="middle" font-size="12" fill="'+VINK()+'">'+esc(p.province)+'</text>';});
+    $('#provinceChart').innerHTML=svg(W,H,g);
+  }
+
+  function drawCorr(){
+    var d=T.correlations.slice().sort(function(a,b){return a.value-b.value});
+    var W=820, rowH=44, padT=10, padB=30, W_lab=210, W_val=52;
+    var H=padT+padB+d.length*rowH;
+    var x0=W_lab, xw=W-W_lab-W_val-20, mid=x0+xw/2; // domain -1..1
+    var xOf=function(v){return mid+(v/1)*(xw/2)};
+    var g='';
+    g+='<line x1="'+mid+'" y1="'+padT+'" x2="'+mid+'" y2="'+(H-padB)+'" stroke="'+VINK()+'" stroke-width="1"/>';
+    [-1,-0.5,0.5,1].forEach(function(t){var xx=xOf(t);
+      g+='<text x="'+xx+'" y="'+(H-10)+'" text-anchor="middle" font-size="10" fill="'+VMI()+'">'+t+'</text>';});
+    d.forEach(function(c,i){var y=padT+i*rowH, cy=y+rowH/2, neg=c.value<0, col=neg?VF():VT();
+      var xe=xOf(c.value);
+      g+='<text x="'+(x0-12)+'" y="'+(cy+4)+'" text-anchor="end" font-size="12.5" fill="'+VINK()+'">'+esc(c.variable)+'</text>';
+      var bx=Math.min(mid,xe), bw=Math.abs(xe-mid);
+      g+='<rect x="'+bx+'" y="'+(cy-11)+'" width="'+bw+'" height="22" rx="3" fill="'+col+'"/>';
+      var lx=neg?xe-6:xe+6, anc=neg?'end':'start';
+      g+='<text x="'+lx+'" y="'+(cy+4)+'" text-anchor="'+anc+'" font-size="12" font-family="var(--mono)" fill="'+VINK()+'">'+c.value.toFixed(2)+'</text>';});
+    $('#corrChart').innerHTML=svg(W,H,g);
+  }
+
+  function drawScenario(){
+    var d=T.scenarios, W=820,H=430,padL=44,padR=16,padT=28,padB=74;
+    var iw=W-padL-padR, ih=H-padT-padB, n=d.length, band=iw/n, bw=Math.min(120,band*0.55);
+    var g='';
+    for(var y=0;y<=80;y+=20){var yy=padT+ih-(y/80)*ih;
+      g+='<line x1="'+padL+'" y1="'+yy+'" x2="'+(W-padR)+'" y2="'+yy+'" stroke="'+VLINE()+'"/>'+
+         '<text x="'+(padL-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="11" fill="'+VMI()+'">'+y+'%</text>';}
+    d.forEach(function(s,i){var cx=padL+band*i+band/2, v=s.predicted*100, hh=v/80*ih, col=i<2?VT():VF();
+      g+='<rect x="'+(cx-bw/2)+'" y="'+(padT+ih-hh)+'" width="'+bw+'" height="'+hh+'" rx="3" fill="'+col+'"/>'+
+         '<text x="'+cx+'" y="'+(padT+ih-hh-8)+'" text-anchor="middle" font-size="13" font-weight="600" fill="'+VINK()+'">'+v.toFixed(1)+'%</text>';
+      var parts=s.label.split(' · ');
+      g+='<text x="'+cx+'" y="'+(H-padB+22)+'" text-anchor="middle" font-size="11.5" fill="'+VINK()+'">'+esc(parts[0])+'</text>'+
+         '<text x="'+cx+'" y="'+(H-padB+40)+'" text-anchor="middle" font-size="11.5" fill="'+VMI()+'">'+esc(parts[1]||'')+'</text>';});
+    $('#scenarioChart').innerHTML=svg(W,H,g);
+  }
+
+  function drawSevere(){
+    var d=T.severeContrast, W=820,H=420,padL=44,padR=16,padT=24,padB=64;
+    var iw=W-padL-padR, ih=H-padT-padB, n=d.length, band=iw/n, bw=Math.min(20,band*0.3), gap=4;
+    var maxv=90;
+    var g='';
+    for(var y=0;y<=90;y+=30){var yy=padT+ih-(y/maxv)*ih;
+      g+='<line x1="'+padL+'" y1="'+yy+'" x2="'+(W-padR)+'" y2="'+yy+'" stroke="'+VLINE()+'"/>'+
+         '<text x="'+(padL-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="11" fill="'+VMI()+'">'+y+'%</text>';}
+    d.forEach(function(r,i){var cx=padL+band*i+band/2, h1=r.overall*100/maxv*ih, h2=r.severe*100/maxv*ih;
+      g+='<rect x="'+(cx-bw-gap/2)+'" y="'+(padT+ih-h1)+'" width="'+bw+'" height="'+h1+'" rx="2" fill="'+VT()+'"/>'+
+         '<rect x="'+(cx+gap/2)+'" y="'+(padT+ih-h2)+'" width="'+bw+'" height="'+h2+'" rx="2" fill="'+VF()+'"/>'+
+         '<text x="'+cx+'" y="'+(H-padB+18)+'" text-anchor="middle" font-size="10.5" fill="'+VINK()+'" transform="rotate(-18 '+cx+' '+(H-padB+18)+')">'+esc(r.district)+'</text>';});
+    $('#severeChart').innerHTML=svg(W,H,g);
+  }
+
+  function drawAllCharts(){drawProvince();drawCorr();drawScenario();drawSevere();}
+  drawAllCharts();
+
+  /* ============ MAP ============ */
+  var METRICS=['insufficiency','irrigation','fragmentation','belt'];
+  var MLABEL={insufficiency:'Insufficiency',irrigation:'Irrigation',fragmentation:'Fragmentation',belt:'Belt'};
+  var BELT={Mountain:'rgb(120,92,160)',Hill:'rgb(196,132,80)',Terai:'rgb(70,140,90)'};
+  var metric='insufficiency', geo=null, pinned=null, hover=null;
+  var byName={}; T.districts.forEach(function(d){byName[d.name]=d});
+  function lookup(gn){return byName[T.geoNameAliases[gn]||gn]}
+  function mval(m,d){return m==='irrigation'?d.irrigation:m==='fragmentation'?d.parcels:d.insufficiency}
+  function fmt(m,v){return m==='fragmentation'?v.toFixed(2):pct(v)}
+  function ramp(m,v,lo,hi){var t=Math.max(0,Math.min(1,(v-lo)/(hi-lo)));var r,g2,b;
+    if(m==='irrigation'){r=Math.round(248-t*(248-36));g2=Math.round(240-t*(240-90));b=Math.round(220-t*(220-55));}
+    else{r=Math.round(248-t*(248-196));g2=Math.round(240-t*(240-84));b=Math.round(220-t*(220-50));}
+    return 'rgb('+r+','+g2+','+b+')';}
+  var vals={}; METRICS.forEach(function(m){if(m==='belt')return;var a=T.districts.map(function(d){return mval(m,d)});
+    vals[m]={min:Math.min.apply(null,a),max:Math.max.apply(null,a)};});
+
+  // Mercator fitSize projection
+  var W=900,H=460, proj=null;
+  function buildProj(features){
+    var minx=Infinity,miny=Infinity,maxx=-Infinity,maxy=-Infinity;
+    function merc(lon,lat){return [lon*Math.PI/180, Math.log(Math.tan(Math.PI/4+lat*Math.PI/360))];}
+    features.forEach(function(f){f.geometry.coordinates.forEach(function(ring){ring.forEach(function(pt){
+      var p=merc(pt[0],pt[1]); if(p[0]<minx)minx=p[0]; if(p[0]>maxx)maxx=p[0]; if(p[1]<miny)miny=p[1]; if(p[1]>maxy)maxy=p[1];});});});
+    var pad=8, scale=Math.min((W-2*pad)/(maxx-minx),(H-2*pad)/(maxy-miny));
+    var ox=(W-scale*(maxx+minx))/2, oy=(H+scale*(maxy+miny))/2;
+    proj=function(lon,lat){var p=merc(lon,lat);return [p[0]*scale+ox, -p[1]*scale+oy];};
+  }
+  function pathOf(f){var s='';f.geometry.coordinates.forEach(function(ring){ring.forEach(function(pt,i){
+    var p=proj(pt[0],pt[1]);s+=(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1);});s+='Z';});return s;}
+  function centroid(f){var sx=0,sy=0,k=0;f.geometry.coordinates[0].forEach(function(pt){var p=proj(pt[0],pt[1]);sx+=p[0];sy+=p[1];k++;});return [sx/k,sy/k];}
+
+  function renderTabs(){$('#mapTabs').innerHTML=METRICS.map(function(m){
+    return '<button class="tab" role="tab" data-m="'+m+'" aria-selected="'+(m===metric)+'">'+MLABEL[m]+'</button>';}).join('');
+    Array.prototype.forEach.call($('#mapTabs').children,function(b){b.addEventListener('click',function(){metric=b.dataset.m;renderTabs();renderLegend();renderMap();});});}
+  function renderLegend(){var el=$('#mapLegend');
+    if(metric==='belt'){el.innerHTML=Object.keys(BELT).map(function(b){return '<span><span class="swatch" style="background:'+BELT[b]+'"></span>'+b+'</span>';}).join('');return;}
+    var b=vals[metric];var grad=metric==='irrigation'?'linear-gradient(90deg,rgb(248,240,220),rgb(36,90,55))':'linear-gradient(90deg,rgb(248,240,220),rgb(196,84,50))';
+    el.innerHTML='<span class="ramp" style="background:'+grad+'"></span><span class="mono">'+fmt(metric,b.min)+'</span><span class="mono" style="opacity:.5">→</span><span class="mono">'+fmt(metric,b.max)+'</span>';}
+  function fillOf(row){if(!row)return 'var(--muted)';if(metric==='belt')return BELT[row.belt]||'var(--muted)';var b=vals[metric];return ramp(metric,mval(metric,row),b.min,b.max);}
+
+  function renderMap(){if(!geo)return;var active=pinned||hover;var g='';
+    geo.features.forEach(function(f){var gn=f.properties.DIST_EN, row=lookup(gn);
+      var isA=active&&row&&active.name===row.name, isP=pinned&&row&&pinned.name===row.name;
+      g+='<path data-d="'+esc(gn)+'"'+(row?' tabindex="0" role="button"':'')+' aria-label="'+(row?esc(row.name+', '+row.province+', '+row.belt+'. Insufficiency '+pct(row.insufficiency)+', irrigation '+pct(row.irrigation)+', rank '+row.rank+' of 77'):esc(gn))+'" d="'+pathOf(f)+'" fill="'+fillOf(row)+'" stroke="'+(isA?MINK():'rgba(45,30,20,0.5)')+'" stroke-width="'+(isP?2.4:isA?1.6:0.5)+'"><title>'+(row?esc(row.name+' · '+row.province+' · '+row.belt+' — Insuff '+pct(row.insufficiency)+', Irrig '+pct(row.irrigation)+', Parcels '+row.parcels.toFixed(2)+' (rank '+row.rank+'/77)'):esc(gn))+'</title></path>';});
+    if(pinned){var pf=null;geo.features.forEach(function(f){if((T.geoNameAliases[f.properties.DIST_EN]||f.properties.DIST_EN)===pinned.name)pf=f;});
+      if(pf){var c=centroid(pf);g+='<g pointer-events="none"><circle cx="'+c[0]+'" cy="'+(c[1])+'" r="4" fill="'+MINK()+'"/><text x="'+c[0]+'" y="'+(c[1]-9)+'" text-anchor="middle" font-size="12" fill="'+MINK()+'" style="paint-order:stroke;stroke:var(--map-canvas);stroke-width:3px">'+esc(pinned.name)+'</text></g>';}}
+    $('#mapSvg').innerHTML=g;
+    Array.prototype.forEach.call($('#mapSvg').querySelectorAll('path'),function(p){
+      var row=lookup(p.dataset.d);
+      p.addEventListener('mouseenter',function(){hover=row;showTip(row);renderMapStrokes();});
+      p.addEventListener('mouseleave',function(){hover=null;$('#mapTip').hidden=true;renderMapStrokes();});
+      p.addEventListener('focus',function(){hover=row;showTip(row);renderMapStrokes();});
+      p.addEventListener('blur',function(){hover=null;$('#mapTip').hidden=true;renderMapStrokes();});
+      p.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();if(row){pinned=(pinned&&pinned.name===row.name)?null:row;renderMap();renderPanel();}}});
+      p.addEventListener('click',function(e){e.stopPropagation();if(row){pinned=(pinned&&pinned.name===row.name)?null:row;renderMap();renderPanel();}});});}
+  function renderMapStrokes(){var active=pinned||hover;
+    Array.prototype.forEach.call($('#mapSvg').querySelectorAll('path'),function(p){var row=lookup(p.dataset.d);
+      var isA=active&&row&&active.name===row.name,isP=pinned&&row&&pinned.name===row.name;
+      p.setAttribute('stroke',isA?MINK():'rgba(45,30,20,0.5)');p.setAttribute('stroke-width',isP?2.4:isA?1.6:0.5);});
+    if(!pinned)renderPanel();}
+  $('#mapSvg').addEventListener('click',function(e){if(e.target===this){pinned=null;renderMap();renderPanel();}});
+
+  function showTip(row){if(!row){return;}var t=$('#mapTip');t.hidden=false;
+    t.innerHTML='<div class="nm">'+esc(row.name)+'</div><div class="mt-meta">'+esc(row.province)+' · '+row.belt+' · rank '+row.rank+'/77</div>'+
+      '<div class="mt-grid"><div><div class="k">Insuff.</div>'+pct(row.insufficiency)+'</div><div><div class="k">Irrig.</div>'+pct(row.irrigation)+'</div><div><div class="k">Parcels</div>'+row.parcels.toFixed(2)+'</div></div>';}
+
+  function renderPanel(){var d=pinned||hover;var el=$('#mapPanel');
+    if(!d){el.innerHTML='<div class="panel empty"><div style="font-family:var(--serif);font-size:20px;color:var(--ink)">District profile</div><p style="margin-top:10px;line-height:1.55">Hover or click a district on the map — or search by name — to see its full profile and where it sits in the national distribution.</p></div>';return;}
+    var perc=Math.round((d.rank-1)/76*100);
+    el.innerHTML='<div class="panel"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">'+
+      '<div><div class="p-prov">'+esc(d.province)+' · '+d.belt+'</div><div class="p-name">'+esc(d.name)+'</div></div>'+
+      (pinned?'<button class="iconbtn" id="clearPin" style="height:28px;font-size:10px;text-transform:uppercase;letter-spacing:.1em">Clear</button>':'')+'</div>'+
+      '<dl><div><dt>Insufficiency</dt><dd>'+pct(d.insufficiency)+'<small>rank '+d.rank+'/77</small></dd></div>'+
+      '<div><dt>Irrigation</dt><dd>'+pct(d.irrigation)+'</dd></div>'+
+      '<div><dt>Parcels / holding</dt><dd>'+d.parcels.toFixed(2)+'</dd></div>'+
+      '<div><dt>Severe (10–12 mo)</dt><dd>'+pct(d.severe)+'</dd></div>'+
+      '<div><dt>Holdings</dt><dd>'+d.holdings.toLocaleString()+'</dd></div>'+
+      '<div><dt>Distribution</dt><dd>'+perc+'th pct<small>lower = worse</small></dd></div></dl>'+
+      '<div style="margin-top:16px">'+
+      pbar('Insufficiency',d.insufficiency,1,'var(--terracotta)')+pbar('Irrigation',d.irrigation,1,'var(--forest)')+pbar('Parcels',d.parcels,6.3,'var(--ink)')+
+      '</div></div>';
+    var cp=$('#clearPin');if(cp)cp.addEventListener('click',function(){pinned=null;renderMap();renderPanel();});}
+  function pbar(lab,v,mx,col){var w=Math.max(0,Math.min(100,v/mx*100));
+    return '<div class="pbar"><div class="pl"><span>'+lab+'</span><span>of national range</span></div><div class="track"><div class="fill" style="width:'+w+'%;background:'+col+'"></div></div></div>';}
+
+  // search
+  var si=$('#mapSearch');
+  si.addEventListener('input',function(){var q=si.value.trim().toLowerCase();var sl=$('#searchList');
+    if(!q){sl.innerHTML='';return;}
+    var m=T.districts.filter(function(d){return d.name.toLowerCase().indexOf(q)>=0}).slice(0,6);
+    sl.innerHTML=m.length?'<div class="search-list">'+m.map(function(d){return '<button data-n="'+esc(d.name)+'">'+esc(d.name)+' <span style="color:var(--muted-ink)">· '+d.belt+'</span></button>';}).join('')+'</div>':'';
+    Array.prototype.forEach.call(sl.querySelectorAll('button'),function(b){b.addEventListener('click',function(){pinned=byName[b.dataset.n];si.value='';sl.innerHTML='';renderMap();renderPanel();document.getElementById('map').scrollIntoView({behavior:'smooth'});});});});
+  si.addEventListener('click',function(e){e.stopPropagation();});
+
+  renderTabs();renderLegend();renderPanel();
+  fetch('nepal-districts.geojson').then(function(r){return r.json()}).then(function(j){geo=j;buildProj(geo.features);renderMap();})
+    .catch(function(){$('#mapBox').insertAdjacentHTML('beforeend','<div style="position:absolute;inset:0;display:grid;place-items:center;color:var(--muted-ink);font-size:14px">Map data could not be loaded.</div>');});
+
+  /* ---------- slides fullscreen ---------- */
+  var frame=$('#slideFrame');
+  $('#fsBtn').addEventListener('click',function(){
+    if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen?document.exitFullscreen():document.webkitExitFullscreen());}
+    else if(frame.requestFullscreen){frame.requestFullscreen();}
+    else if(frame.webkitRequestFullscreen){frame.webkitRequestFullscreen();}});
+
+  /* ---------- scroll niceties ---------- */
+  var prog=$('#progress'),toTop=$('#toTop');
+  function onScroll(){var st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;
+    prog.style.width=(dh>0?st/dh*100:0)+'%';toTop.classList.toggle('show',st>800);}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  toTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'-40px'});
+    Array.prototype.forEach.call(document.querySelectorAll('.reveal'),function(el){io.observe(el)});
+  }else{Array.prototype.forEach.call(document.querySelectorAll('.reveal'),function(el){el.classList.add('in')});}
+})();
+</script>
+</body>
+</html>
