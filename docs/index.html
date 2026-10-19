@@ -170,12 +170,6 @@ h3.sub-h{font-family:var(--serif);font-size:24px;margin:0 0 6px}
 .mapbox{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--map-canvas);aspect-ratio:900/460}
 .mapbox svg{width:100%;height:100%;display:block}
 .mapbox path{cursor:pointer;transition:fill .2s ease,stroke-width .12s ease}
-.maptip{position:absolute;left:12px;top:12px;max-width:16rem;background:color-mix(in srgb,var(--card) 96%,transparent);
-  border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:12px;box-shadow:var(--shadow-sm);pointer-events:none}
-.maptip .nm{font-family:var(--serif);font-size:17px;line-height:1.1}
-.maptip .mt-meta{color:var(--muted-ink);margin-top:2px}
-.maptip .mt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;font-family:var(--mono);font-size:11px}
-.maptip .mt-grid .k{font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-ink);font-family:var(--sans)}
 .panel{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:20px}
 .panel.empty{border-style:dashed;color:var(--ink-70)}
 .panel .p-prov{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted-ink)}
@@ -433,7 +427,7 @@ footer.ft{border-top:1px solid var(--line);padding:60px 22px}
     <div class="sec-head reveal">
       <div class="eyebrow">Interactive map</div>
       <h2>Nepal's 77 districts, at a glance.</h2>
-      <p class="lede">True district-level shading from NSCA 2021/22 (Thesis Annex Table). Toggle between insufficiency, irrigation, fragmentation, and the Mountain/Hill/Terai belt — hover, click to pin, or search a district to read its full profile.</p>
+      <p class="lede">True district-level shading from NSCA 2021/22 (Thesis Annex Table). Toggle between insufficiency, irrigation, fragmentation, and the Mountain/Hill/Terai belt — hover, click to pin, or search a district to read its full profile beside the map (below it on smaller screens).</p>
     </div>
     <div class="reveal">
       <div class="map-controls">
@@ -447,11 +441,10 @@ footer.ft{border-top:1px solid var(--line);padding:60px 22px}
       <div class="maplayout">
         <div class="mapbox" id="mapBox">
           <svg id="mapSvg" viewBox="0 0 900 460" role="group" aria-label="Choropleth map of Nepal's 77 districts. Districts are also listed in the data table below."></svg>
-          <div class="maptip" id="mapTip" hidden></div>
         </div>
         <div id="mapPanel"></div>
       </div>
-      <p class="note">Hover any district for a quick read; click to pin it open in the side panel. Use the search box to jump to a specific district. Data: NSCA 2021/22. The outline includes Nepal’s revised northwestern extension; thesis statistics are unchanged. <a href="map-boundary-sources.md">Boundary source</a>.</p>
+      <p class="note">Hover or focus a district to show its details in the profile panel; click or tap to pin it. The panel sits beside the map, or below it on smaller screens. Use the search box to jump to a specific district. Data: NSCA 2021/22. The outline includes Nepal’s revised northwestern extension; thesis statistics are unchanged. <a href="map-boundary-sources.md">Boundary source</a>.</p>
       <details class="datatable">
         <summary>District-level data table (all 77 districts)</summary>
         <div class="tbl-scroll">
@@ -930,38 +923,34 @@ footer.ft{border-top:1px solid var(--line);padding:60px 22px}
     el.innerHTML='<span class="ramp" style="background:'+grad+'"></span><span class="mono">'+fmt(metric,b.min)+'</span><span class="mono" style="opacity:.5">→</span><span class="mono">'+fmt(metric,b.max)+'</span>';}
   function fillOf(row){if(!row)return 'var(--muted)';if(metric==='belt')return BELT[row.belt]||'var(--muted)';var b=vals[metric];return ramp(metric,mval(metric,row),b.min,b.max);}
 
-  function renderMap(){if(!geo)return;var active=pinned||hover;var g='';
+  function renderMap(){if(!geo)return;var active=hover||pinned;var g='';
     geo.features.forEach(function(f){var gn=f.properties.DIST_EN, row=lookup(gn);
       var isA=active&&row&&active.name===row.name, isP=pinned&&row&&pinned.name===row.name;
-      g+='<path data-d="'+esc(gn)+'"'+(row?' tabindex="0" role="button"':'')+' aria-label="'+(row?esc(row.name+', '+row.province+', '+row.belt+'. Insufficiency '+pct(row.insufficiency)+', irrigation '+pct(row.irrigation)+', rank '+row.rank+' of 77'):esc(gn))+'" d="'+pathOf(f)+'" fill="'+fillOf(row)+'" stroke="'+(isA?MINK():'rgba(45,30,20,0.5)')+'" stroke-width="'+(isP?2.4:isA?1.6:0.5)+'"><title>'+(row?esc(row.name+' · '+row.province+' · '+row.belt+' — Insuff '+pct(row.insufficiency)+', Irrig '+pct(row.irrigation)+', Parcels '+row.parcels.toFixed(2)+' (rank '+row.rank+'/77)'):esc(gn))+'</title></path>';});
+      g+='<path data-d="'+esc(gn)+'"'+(row?' tabindex="0" role="button"':'')+' aria-label="'+(row?esc(row.name+', '+row.province+', '+row.belt+'. Insufficiency '+pct(row.insufficiency)+', irrigation '+pct(row.irrigation)+', rank '+row.rank+' of 77'):esc(gn))+'" d="'+pathOf(f)+'" fill="'+fillOf(row)+'" stroke="'+(isA?MINK():'rgba(45,30,20,0.5)')+'" stroke-width="'+(isP?2.4:isA?1.6:0.5)+'"></path>';});
     if(pinned){var pf=null;geo.features.forEach(function(f){if((T.geoNameAliases[f.properties.DIST_EN]||f.properties.DIST_EN)===pinned.name)pf=f;});
       if(pf){var c=centroid(pf);g+='<g pointer-events="none"><circle cx="'+c[0]+'" cy="'+(c[1])+'" r="4" fill="'+MINK()+'"/><text x="'+c[0]+'" y="'+(c[1]-9)+'" text-anchor="middle" font-size="12" fill="'+MINK()+'" style="paint-order:stroke;stroke:var(--map-canvas);stroke-width:3px">'+esc(pinned.name)+'</text></g>';}}
     $('#mapSvg').innerHTML=g;
     Array.prototype.forEach.call($('#mapSvg').querySelectorAll('path'),function(p){
       var row=lookup(p.dataset.d);
-      p.addEventListener('mouseenter',function(){hover=row;showTip(row);renderMapStrokes();});
-      p.addEventListener('mouseleave',function(){hover=null;$('#mapTip').hidden=true;renderMapStrokes();});
-      p.addEventListener('focus',function(){hover=row;showTip(row);renderMapStrokes();});
-      p.addEventListener('blur',function(){hover=null;$('#mapTip').hidden=true;renderMapStrokes();});
+      p.addEventListener('mouseenter',function(){hover=row;renderMapStrokes();});
+      p.addEventListener('mouseleave',function(){hover=null;renderMapStrokes();});
+      p.addEventListener('focus',function(){hover=row;renderMapStrokes();});
+      p.addEventListener('blur',function(){hover=null;renderMapStrokes();});
       p.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();if(row){pinned=(pinned&&pinned.name===row.name)?null:row;renderMap();renderPanel();}}});
       p.addEventListener('click',function(e){e.stopPropagation();if(row){pinned=(pinned&&pinned.name===row.name)?null:row;renderMap();renderPanel();}});});}
-  function renderMapStrokes(){var active=pinned||hover;
+  function renderMapStrokes(){var active=hover||pinned;
     Array.prototype.forEach.call($('#mapSvg').querySelectorAll('path'),function(p){var row=lookup(p.dataset.d);
       var isA=active&&row&&active.name===row.name,isP=pinned&&row&&pinned.name===row.name;
       p.setAttribute('stroke',isA?MINK():'rgba(45,30,20,0.5)');p.setAttribute('stroke-width',isP?2.4:isA?1.6:0.5);});
-    if(!pinned)renderPanel();}
+    renderPanel();}
   $('#mapSvg').addEventListener('click',function(e){if(e.target===this){pinned=null;renderMap();renderPanel();}});
 
-  function showTip(row){if(!row){return;}var t=$('#mapTip');t.hidden=false;
-    t.innerHTML='<div class="nm">'+esc(row.name)+'</div><div class="mt-meta">'+esc(row.province)+' · '+row.belt+' · rank '+row.rank+'/77</div>'+
-      '<div class="mt-grid"><div><div class="k">Insuff.</div>'+pct(row.insufficiency)+'</div><div><div class="k">Irrig.</div>'+pct(row.irrigation)+'</div><div><div class="k">Parcels</div>'+row.parcels.toFixed(2)+'</div></div>';}
-
-  function renderPanel(){var d=pinned||hover;var el=$('#mapPanel');
+  function renderPanel(){var d=hover||pinned;var el=$('#mapPanel');
     if(!d){el.innerHTML='<div class="panel empty"><div style="font-family:var(--serif);font-size:20px;color:var(--ink)">District profile</div><p style="margin-top:10px;line-height:1.55">Hover or click a district on the map — or search by name — to see its full profile and where it sits in the national distribution.</p></div>';return;}
     var perc=Math.round((d.rank-1)/76*100);
     el.innerHTML='<div class="panel"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">'+
       '<div><div class="p-prov">'+esc(d.province)+' · '+d.belt+'</div><div class="p-name">'+esc(d.name)+'</div></div>'+
-      (pinned?'<button class="iconbtn" id="clearPin" style="height:28px;font-size:10px;text-transform:uppercase;letter-spacing:.1em">Clear</button>':'')+'</div>'+
+      (pinned&&d===pinned?'<button class="iconbtn" id="clearPin" style="height:28px;font-size:10px;text-transform:uppercase;letter-spacing:.1em">Clear</button>':'')+'</div>'+
       '<dl><div><dt>Insufficiency</dt><dd>'+pct(d.insufficiency)+'<small>rank '+d.rank+'/77</small></dd></div>'+
       '<div><dt>Irrigation</dt><dd>'+pct(d.irrigation)+'</dd></div>'+
       '<div><dt>Parcels / holding</dt><dd>'+d.parcels.toFixed(2)+'</dd></div>'+
