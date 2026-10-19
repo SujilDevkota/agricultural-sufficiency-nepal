@@ -451,7 +451,7 @@ footer.ft{border-top:1px solid var(--line);padding:60px 22px}
         </div>
         <div id="mapPanel"></div>
       </div>
-      <p class="note">Hover any district for a quick read; click to pin it open in the side panel. Use the search box to jump to a specific district. Data: NSCA 2021/22.</p>
+      <p class="note">Hover any district for a quick read; click to pin it open in the side panel. Use the search box to jump to a specific district. Data: NSCA 2021/22. The outline includes Nepal’s revised northwestern extension; thesis statistics are unchanged. <a href="map-boundary-sources.md">Boundary source</a>.</p>
       <details class="datatable">
         <summary>District-level data table (all 77 districts)</summary>
         <div class="tbl-scroll">
@@ -910,7 +910,16 @@ footer.ft{border-top:1px solid var(--line);padding:60px 22px}
   }
   function pathOf(f){var s='';f.geometry.coordinates.forEach(function(ring){ring.forEach(function(pt,i){
     var p=proj(pt[0],pt[1]);s+=(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1);});s+='Z';});return s;}
-  function centroid(f){var sx=0,sy=0,k=0;f.geometry.coordinates[0].forEach(function(pt){var p=proj(pt[0],pt[1]);sx+=p[0];sy+=p[1];k++;});return [sx/k,sy/k];}
+  // Weight label placement by polygon area, not vertex density along detailed borders.
+  function centroid(f){
+    var ring=f.geometry.coordinates[0].map(function(pt){return proj(pt[0],pt[1]);});
+    var area=0,sx=0,sy=0;
+    for(var i=0;i<ring.length-1;i++){
+      var a=ring[i],b=ring[i+1],cross=a[0]*b[1]-b[0]*a[1];
+      area+=cross;sx+=(a[0]+b[0])*cross;sy+=(a[1]+b[1])*cross;
+    }
+    return Math.abs(area)>1e-8?[sx/(3*area),sy/(3*area)]:ring[0];
+  }
 
   function renderTabs(){$('#mapTabs').innerHTML=METRICS.map(function(m){
     return '<button class="tab" role="tab" data-m="'+m+'" aria-selected="'+(m===metric)+'">'+MLABEL[m]+'</button>';}).join('');
@@ -976,7 +985,7 @@ footer.ft{border-top:1px solid var(--line);padding:60px 22px}
   si.addEventListener('click',function(e){e.stopPropagation();});
 
   renderTabs();renderLegend();renderPanel();
-  fetch('nepal-districts.geojson').then(function(r){return r.json()}).then(function(j){geo=j;buildProj(geo.features);renderMap();})
+  fetch('nepal-districts.geojson?v=20261019').then(function(r){return r.json()}).then(function(j){geo=j;buildProj(geo.features);renderMap();})
     .catch(function(){$('#mapBox').insertAdjacentHTML('beforeend','<div style="position:absolute;inset:0;display:grid;place-items:center;color:var(--muted-ink);font-size:14px">Map data could not be loaded.</div>');});
 
   /* ---------- slides fullscreen ---------- */
